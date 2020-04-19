@@ -30,7 +30,7 @@ function log_fatal(msg) {
 }
 
 function welcomeMember(member) {
-    log(`[info] Welcoming ${member.tag}`)
+    log_info(`Welcoming ${member.tag}`);
 
     let embed = new MessageEmbed()
         .setTitle('Welcome to the official DigiPen discord server!')
