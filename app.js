@@ -1,6 +1,6 @@
 // Constants
-const { welcome_message_header, guild_id, role_data } = require('./bot_data.json');
-const { token } = require('./config.json');
+const { welcome_message_header, role_data } = require('./bot_data.json');
+const { token, guild_id } = require('./config.json');
 const { Client, MessageEmbed } = require('discord.js');
 const client = new Client();
 
