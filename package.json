@@ -1,0 +1,22 @@
+{
+  "name": "digibot",
+  "version": "1.0.0",
+  "description": "A custom discord bot for the DigiPen discord server",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sandyjam/digibot.git"
+  },
+  "author": "sandy",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sandyjam/digibot/issues"
+  },
+  "homepage": "https://github.com/sandyjam/digibot#readme",
+  "dependencies": {
+    "discord.js": "^12.2.0"
+  }
+}
