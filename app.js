@@ -12,33 +12,38 @@ var guild;
 // Helper functions
 //-----------------
 
+function log(msg) {
+    console.log(`[${new Date().toISOString()}]${msg}`);
+}
+
+function log_info(msg) {
+    log(`[info] ${msg}`);
+}
+
+function log_warn(msg) {
+    log(`[warn] ${msg}`);
+}
+
+function log_fatal(msg) {
+    log(`[fatal] ${msg}`);
+    process.exit(1);
+}
+
 function welcomeMember(member) {
+    log(`[info] Welcoming ${member.tag}`)
+
     let embed = new MessageEmbed()
         .setTitle('Welcome to the official DigiPen discord server!')
         .setColor(0xC41F37)
         .setDescription(welcomeMessage);
 
     // Send welcome message
-    member.send(embed).then((msg) => {
+    member.send(embed).then(async(msg) => {
         // Add emojis for reactions, can unfortunately take a while since we want them in order and need to wait
-        // TODO: make this not ugly
-        msg.react(role_data[0].emoji)
-            .then(() => msg.react(role_data[1].emoji))
-            .then(() => msg.react(role_data[2].emoji))
-            .then(() => msg.react(role_data[3].emoji))
-            .then(() => msg.react(role_data[4].emoji))
-            .then(() => msg.react(role_data[5].emoji))
-            .then(() => msg.react(role_data[6].emoji))
-            .then(() => msg.react(role_data[7].emoji))
-            .then(() => msg.react(role_data[8].emoji))
-            .then(() => msg.react(role_data[9].emoji))
-            .then(() => msg.react(role_data[10].emoji))
-            // pronouns
-            .then(() => msg.react(role_data[11].emoji))
-            .then(() => msg.react(role_data[12].emoji))
-            .then(() => msg.react(role_data[13].emoji))
-            .catch(console.error);
-    }).catch(console.error);
+        for (const e of role_data) {
+            await msg.react(e.emoji).catch(log_warn);
+        }
+    }).catch(log_warn);
 }
 
 function findRoleByEmoji(emoji) {
@@ -60,13 +65,12 @@ function findRoleByEmoji(emoji) {
 
 // Ready
 client.on('ready', () => {
-    console.log(`[info] Logged in as ${client.user.tag}!`);
+    log_info(`Logged in as ${client.user.tag}!`);
 
     // Set guild
     guild = client.guilds.cache.get(guild_id);
     if (!guild) {
-        console.error(`[fatal] Failed to find guild: ${guild_id}`);
-        process.exit(1);
+        log_fatal(`Failed to find guild: ${guild_id}`);
     }
 
     // Build welcome message
@@ -97,12 +101,12 @@ client.on('messageReactionAdd', (reaction, user) => {
 
     let role = findRoleByEmoji(reaction.emoji.name);
     if (!role) {
-        console.log(`[warn] Failed to find role by emoji: ${reaction.emoji.name}`);
+        log_warn(`Failed to find role by emoji: ${reaction.emoji.name}`);
         return;
     }
 
     // Add the role
-    guild.members.fetch(user).then(member => member.roles.add(role).catch(console.error)).catch(console.error);
+    guild.members.fetch(user).then(member => member.roles.add(role).catch(log_warn)).catch(log_warn);
 });
 
 // Reaction remove
@@ -114,12 +118,12 @@ client.on('messageReactionRemove', (reaction, user) => {
 
     let role = findRoleByEmoji(reaction.emoji.name);
     if (!role) {
-        console.log(`[warn] Failed to find role by emoji: ${reaction.emoji.name}`);
+        log_warn(`Failed to find role by emoji: ${reaction.emoji.name}`);
         return;
     }
 
     // Remove the role
-    guild.members.fetch(user).then(member => member.roles.remove(role).catch(console.error)).catch(console.error);
+    guild.members.fetch(user).then(member => member.roles.remove(role).catch(log_warn)).catch(log_warn);
 });
 
 //------
