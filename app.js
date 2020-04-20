@@ -81,7 +81,7 @@ client.on('ready', () => {
 
 // New member
 client.on('guildMemberAdd', member => {
-    welcomeMember(member);
+    welcomeMember(member.user);
 });
 
 // On message (for debug)
